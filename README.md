@@ -61,6 +61,8 @@ XML - Menor faturamento: 3071.32
 XML - Maior faturamento: 48275.29
 XML - Dias com faturamento acima da média: 10
 
+```
+
 ## 4) Cálculo do Percentual de Representação do Faturamento por Estado
 
 ### Descrição:
