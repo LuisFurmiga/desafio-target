@@ -40,22 +40,26 @@ Digite um número para verificar se pertence à sequência de Fibonacci: 8
 ## 3) Processamento do Faturamento Diário
 
 ### Descrição:
-O programa processa um conjunto de dados em formato JSON contendo o faturamento diário de uma distribuidora e retorna:
+O programa processa um conjunto de dados em formato JSON e XML contendo o faturamento diário de uma distribuidora e retorna:
 - O menor faturamento diário.
 - O maior faturamento diário.
 - O número de dias com faturamento superior à média mensal.
 
 ### Implementação:
-- Os valores são lidos e armazenados ignorando dias sem faturamento (`valor = 0`).
-- Calcula-se a média dos dias faturados.
+- Os valores são lidos a partir dos arquivos `dados.json` e `dados.xml`.
+- Adiciona dinamicamente um elemento raiz ao XML, garantindo que ele possa ser processado corretamente.
+- Calcula-se a média dos dias faturados, ignorando dias com faturamento `0`.
 - Retorna-se o menor e o maior faturamento e a contagem de dias acima da média.
 
 ### Exemplo de Saída:
 ```
-Menor faturamento: 1000
-Maior faturamento: 3000
-Dias com faturamento acima da média: 2
-```
+JSON - Menor faturamento: 373.78
+JSON - Maior faturamento: 48924.24
+JSON - Dias com faturamento acima da média: 12
+
+XML - Menor faturamento: 3071.32
+XML - Maior faturamento: 48275.29
+XML - Dias com faturamento acima da média: 10
 
 ## 4) Cálculo do Percentual de Representação do Faturamento por Estado
 
