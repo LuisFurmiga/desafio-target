@@ -36,23 +36,44 @@ else:
 # a) Usar o json ou xml disponível como fonte dos dados do faturamento mensal; 
 # b) Podem existir dias sem faturamento, como nos finais de semana e feriados. Estes dias devem ser ignorados no cálculo da média; 
 import json
+import xml.etree.ElementTree as ET
 
-def processar_faturamento(json_data):
-    faturamento = json.loads(json_data)
+def processar_faturamento_json(arquivo_json):
+    with open(arquivo_json, 'r', encoding='utf-8') as file:
+        faturamento = json.load(file)
     valores = [dia["valor"] for dia in faturamento if dia["valor"] > 0]
-    
+    return valores
+
+def processar_faturamento_xml(arquivo_xml):
+    with open(arquivo_xml, 'r', encoding='utf-8') as file:
+        xml_content = file.read()
+
+    xml_content = f"<faturamento>{xml_content}</faturamento>"
+
+    root = ET.fromstring(xml_content)
+    valores = [float(row.find("valor").text) for row in root.findall("row") if float(row.find("valor").text) > 0]
+    return valores
+
+def calcular_estatisticas_faturamento(valores):
     menor = min(valores)
     maior = max(valores)
     media = sum(valores) / len(valores)
     dias_acima_media = sum(1 for v in valores if v > media)
-    
     return menor, maior, dias_acima_media
 
-json_faturamento = '[{"dia": 1, "valor": 1000}, {"dia": 2, "valor": 2000}, {"dia": 3, "valor": 0}, {"dia": 4, "valor": 3000}]'  # Exemplo JSON
-menor, maior, dias_acima_media = processar_faturamento(json_faturamento)
-print(f"Menor faturamento: {menor}")
-print(f"Maior faturamento: {maior}")
-print(f"Dias com faturamento acima da média: {dias_acima_media}")
+# Processar JSON
+dados_json = processar_faturamento_json("./dados.json")
+menor_json, maior_json, dias_json = calcular_estatisticas_faturamento(dados_json)
+print(f"JSON - Menor faturamento: {menor_json}")
+print(f"JSON - Maior faturamento: {maior_json}")
+print(f"JSON - Dias com faturamento acima da média: {dias_json}")
+
+# Processar XML
+dados_xml = processar_faturamento_xml("./dados (2).xml")
+menor_xml, maior_xml, dias_xml = calcular_estatisticas_faturamento(dados_xml)
+print(f"XML - Menor faturamento: {menor_xml}")
+print(f"XML - Maior faturamento: {maior_xml}")
+print(f"XML - Dias com faturamento acima da média: {dias_xml}")
 
 # 4) Dado o valor de faturamento mensal de uma distribuidora, detalhado por estado: 
 # •	SP – R$67.836,43 
